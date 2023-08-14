@@ -8,7 +8,6 @@
 <body>
     <script>
         const CHOICES = ["rock", "paper", "scissors"];
-        let prompt("Enter 0 for rock, 1 for paper and 2 for scissors.")
 
         function isPlayerOneWinner(playerOneSelection, playerTwoSelection) {
             if((playerOneSelection.toLowerCase() === "rock") && (playerTwoSelection.toLowerCase() === "scissors")) {
@@ -39,7 +38,35 @@
             let valueFromComp = Math.floor(Math.random()*3);
             return CHOICES[valueFromComp];
         }
-        console.log(getComputerChoice())
+
+        function game() {
+            let numOfRounds = 5;
+            let userScore = 0;
+            let computerScore = 0;
+            for(let i=1; i<=5; i++) {
+                let playerIntChoice = parseInt(prompt("Enter 1 for rock, 2 for paper and 3 for scissors."));
+                let playerOneSelection = CHOICES[playerIntChoice-1];
+                console.log(`For round #${i}`);
+                console.log(`You selected ${playerOneSelection}`);
+                let computerSelection = getComputerChoice();
+                console.log(`Computer selected ${computerSelection}`);
+                let roundScore = playRound(playerOneSelection, computerSelection);
+                if(roundScore>0) {
+                    userScore++;
+                    console.log(`You won.`);
+                }
+                else if(roundScore<0) {
+                    computerScore++;
+                    console.log(`Computer won.`);
+                }
+                else {
+                    console.log(`We have a tie.`);
+                }
+                console.log(`After round #${i}, your score = ${userScore}, computer score = ${computerScore}`);
+            }
+            console.log(`Final scores, your score = ${userScore}, computer score = ${computerScore}`);
+        }
+        game()
 
     </script>
 </body>
