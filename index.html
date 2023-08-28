@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock Paper Scissors Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="header-section">
@@ -21,27 +22,35 @@
         <div class="game-score-board">
             <div class="score-board">
                 <img src="./images/header-logo.jpg" alt="Player Choice" class="player-choice">
-                <div class="player-score">
+                <div class="score" id="player">
                     Player: 0
                 </div>
             </div>
             <div class="score-board">
                 <img src="./images/header-logo.jpg" alt="Computer Choice" class="computer-choice">
-                <div class="computer-score">
+                <div class="score" id="computer">
                     Computer: 0
                 </div>
             </div>
         </div>
 
         <div class="game-buttons">
-            
+            <button class="hand-button" id="rock">
+                ROCK
+            </button>
+            <button class="hand-button" id="paper">
+                PAPER
+            </button>
+            <button class="hand-button" id="scissors">
+                SCISSORS
+            </button>
         </div>
 
         
     </div>
     <div class="footer-section">
         <div class="footer-text">
-            Copyright 2023 menvqeta
+            Copyright @ 2023 menvqeta
         </div>
         <div class="footer-link">
             <a href="#">About</a>
