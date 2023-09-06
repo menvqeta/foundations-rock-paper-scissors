@@ -30,7 +30,13 @@ function getComputerChoice() {
     return CHOICES[valueFromComp];
 }
 
+function handleButtonClick(button) {
+    console.log(`Clicked`);
+}
+
 function game() {
+
+
     let numOfRounds = 1;
     let userScore = 0;
     let computerScore = 0;
@@ -63,4 +69,10 @@ function playOneRound(roundNo, userScore, computerScore) {
     return { userScore, computerScore };
 }
 
-game();
+// game();
+
+const handButtons = document.querySelectorAll(".hand-button");
+
+handButtons.forEach(function(button) {
+    button.addEventListener("click", handleButtonClick(button));
+});

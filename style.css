@@ -86,3 +86,25 @@ body {
     gap: 30px;
     justify-content: center;
   }
+
+  .hand-button {
+    background-color: #1f2937;
+    border-radius: 10px;
+    font-size: 120px;
+    border: none;
+  }
+
+  .hand-button {
+    background-color: #1f2937;
+    border-radius: 10px;
+    font-size: 120px;
+    border: none;
+  }
+
+  .hand-button:hover {
+    background-color: darkgrey;
+  }
+
+  .round-choice {
+    font-size: 80px;
+  }
