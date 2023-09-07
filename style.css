@@ -77,7 +77,10 @@ body {
   }
 
   .score {
+    display: flex;
     font-size: 25px;
+    flex-direction: row;
+    gap: 10px;
   }
 
   .game-buttons {

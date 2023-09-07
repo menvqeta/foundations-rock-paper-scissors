@@ -1,4 +1,3 @@
-const CHOICES = ["rock", "paper", "scissors"];
 
 function isPlayerOneWinner(playerOneSelection, playerTwoSelection) {
     if((playerOneSelection.toLowerCase() === "rock") && (playerTwoSelection.toLowerCase() === "scissors")) {
@@ -27,7 +26,7 @@ function playRound(playerSelection, computerSelection) {
 
 function getComputerChoice() {
     let valueFromComp = Math.floor(Math.random()*3);
-    return CHOICES[valueFromComp];
+    return valueFromComp;
 }
 
 function handleButtonClick(button) {
@@ -69,10 +68,70 @@ function playOneRound(roundNo, userScore, computerScore) {
     return { userScore, computerScore };
 }
 
-// game();
+function handleClick(buttonClicked) {
+    let playerSelection = '';
+    for(let i=0; i<CHOICES.length; i++) {
+        let name = CHOICES[i]["name"];
+        let symbol = CHOICES[i]["symbol"];
+        if(buttonClicked.toUpperCase() === name.toUpperCase()) {
+            playerSelection = name;
+            playerChoiceSymbol.textContent = symbol;
+        }
+    }
+    let computerChoice = getComputerChoice();
+    computerChoiceSymbol.textContent = CHOICES[computerChoice]["symbol"];
+    let computerSelection = CHOICES[computerChoice]["name"];
+    let playerSelectionCamelCase = playerSelection.toUpperCase();
+    let computerSelectionUpperCase = computerSelection.toUpperCase();
+    let roundScore = playRound(playerSelection, computerSelection);
+    if (roundScore > 0) {
+        gameHeadingText.textContent = `You WON!`;
+        gameSubHeadingText.textContent = `${playerSelectionCamelCase} beats ${computerSelectionUpperCase}`;
+        playerScore++;
+        playerScoreText.textContent = playerScore;
+    }
+    else if (roundScore < 0) {
+        gameHeadingText.textContent = `You LOST!`;
+        gameSubHeadingText.textContent = `${playerSelectionCamelCase} is beated by ${computerSelectionUpperCase}`;
+        computerScore++;
+        computerScoreText.textContent = computerScore;
+    }
+    else {
+        gameHeadingText.textContent = `It's a TIE!`;
+        gameSubHeadingText.textContent = `${playerSelectionCamelCase} ties with ${computerSelectionUpperCase}`;
+    }
+    
+}
 
-const handButtons = document.querySelectorAll(".hand-button");
 
-handButtons.forEach(function(button) {
-    button.addEventListener("click", handleButtonClick(button));
-});
+function startGame() {
+    rockButton.addEventListener('click', () => handleClick('rock'));
+    paperButton.addEventListener('click', () => handleClick('paper'));
+    scissorsButton.addEventListener('click', () => handleClick('scissors'));
+}
+
+
+
+const CHOICES = [
+    {"symbol": "✊🏻", "name": "rock"}, 
+    {"symbol": "✋🏻", "name": "paper"},
+    {"symbol": "✌️", "name": "scissors"}
+];
+
+const rockButton = document.querySelector("#rock-button");
+const paperButton = document.querySelector("#paper-button");
+const scissorsButton = document.querySelector("#scissors-button");
+
+const playerChoiceSymbol = document.querySelector("#player-choice");
+const computerChoiceSymbol = document.querySelector("#computer-choice");
+
+const gameHeadingText = document.querySelector(".game-heading");
+const gameSubHeadingText = document.querySelector(".game-sub-heading");
+
+const playerScoreText = document.querySelector("#player-score");
+const computerScoreText = document.querySelector("#computer-score");
+
+let playerScore = 0;
+let computerScore = 0;
+
+startGame();
