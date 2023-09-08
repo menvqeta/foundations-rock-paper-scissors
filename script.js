@@ -29,80 +29,115 @@ function getComputerChoice() {
     return valueFromComp;
 }
 
-function handleButtonClick(button) {
-    console.log(`Clicked`);
-}
-
-function game() {
-
-
-    let numOfRounds = 1;
-    let userScore = 0;
-    let computerScore = 0;
-    for(let roundNo=1; roundNo<=numOfRounds; roundNo++) {
-        ({ userScore, computerScore } = playOneRound(roundNo, userScore, computerScore));
-    }
-    console.log(`Final scores, your score = ${userScore}, computer score = ${computerScore}`);
-}
-
-function playOneRound(roundNo, userScore, computerScore) {
-    let playerIntChoice = parseInt(prompt("Enter 1 for rock, 2 for paper and 3 for scissors."));
-    let playerOneSelection = CHOICES[playerIntChoice - 1];
-    console.log(`For round #${roundNo}`);
-    console.log(`You selected ${playerOneSelection}`);
-    let computerSelection = getComputerChoice();
-    console.log(`Computer selected ${computerSelection}`);
-    let roundScore = playRound(playerOneSelection, computerSelection);
-    if (roundScore > 0) {
-        userScore++;
-        console.log(`You won.`);
-    }
-    else if (roundScore < 0) {
-        computerScore++;
-        console.log(`Computer won.`);
-    }
-    else {
-        console.log(`We have a tie.`);
-    }
-    console.log(`After round #${roundNo}, your score = ${userScore}, computer score = ${computerScore}`);
-    return { userScore, computerScore };
-}
-
 function handleClick(buttonClicked) {
-    let playerSelection = '';
-    for(let i=0; i<CHOICES.length; i++) {
-        let name = CHOICES[i]["name"];
-        let symbol = CHOICES[i]["symbol"];
-        if(buttonClicked.toUpperCase() === name.toUpperCase()) {
-            playerSelection = name;
-            playerChoiceSymbol.textContent = symbol;
-        }
+    let playerWon = (playerScore === totalNumOfGames);
+    let computerWon = (computerScore === totalNumOfGames);
+    if(isGameOver(playerWon, computerWon)) {
+        resetGame();
+        return;
     }
-    let computerChoice = getComputerChoice();
-    computerChoiceSymbol.textContent = CHOICES[computerChoice]["symbol"];
-    let computerSelection = CHOICES[computerChoice]["name"];
+
+    let playerSelection = updatePlayerSelectionSymbol(buttonClicked);
+    let computerSelection = updateComputerSelectionSymbol();
+    
     let playerSelectionCamelCase = playerSelection.toUpperCase();
     let computerSelectionUpperCase = computerSelection.toUpperCase();
+
     let roundScore = playRound(playerSelection, computerSelection);
-    if (roundScore > 0) {
-        gameHeadingText.textContent = `You WON!`;
-        gameSubHeadingText.textContent = `${playerSelectionCamelCase} beats ${computerSelectionUpperCase}`;
-        playerScore++;
-        playerScoreText.textContent = playerScore;
-    }
-    else if (roundScore < 0) {
-        gameHeadingText.textContent = `You LOST!`;
-        gameSubHeadingText.textContent = `${playerSelectionCamelCase} is beated by ${computerSelectionUpperCase}`;
-        computerScore++;
-        computerScoreText.textContent = computerScore;
-    }
-    else {
-        gameHeadingText.textContent = `It's a TIE!`;
-        gameSubHeadingText.textContent = `${playerSelectionCamelCase} ties with ${computerSelectionUpperCase}`;
+    updateTextAfterARound(roundScore, playerSelectionCamelCase, computerSelectionUpperCase);
+    playerWon = (playerScore === totalNumOfGames);
+    computerWon = (computerScore === totalNumOfGames);
+    if(isGameOver(playerWon, computerWon)) {
+        updateEndGameText(playerWon, computerWon);
     }
     
 }
 
+
+function updateEndGameText(playerWon, computerWon) {
+    if (playerWon) {
+        updateTextAfterPlayerWinsTheGame();
+    }
+    if (computerWon) {
+        updateTextAfterPlayerLosesTheGame();
+    }
+}
+
+function updateTextAfterPlayerLosesTheGame() {
+    gameHeadingText.textContent = `You LOST the game !!!`;
+    gameSubHeadingText.textContent = '';
+}
+
+function updateTextAfterPlayerWinsTheGame() {
+    gameHeadingText.textContent = `You WON the game !!!`;
+    gameSubHeadingText.textContent = '';
+}
+
+function updateTextAfterARound(roundScore, playerSelectionCamelCase, computerSelectionUpperCase) {
+    if (roundScore > 0) {
+        updateTextWhenPlayerWins(playerSelectionCamelCase, computerSelectionUpperCase);
+    }
+    else if (roundScore < 0) {
+        updateTextWhenPlayerLoses(playerSelectionCamelCase, computerSelectionUpperCase);
+    }
+    else {
+        updateTextWhenThereIsATie(playerSelectionCamelCase, computerSelectionUpperCase);
+    }
+}
+
+function updateTextWhenThereIsATie(playerSelectionCamelCase, computerSelectionUpperCase) {
+    gameHeadingText.textContent = `It's a TIE!`;
+    gameSubHeadingText.textContent = `${playerSelectionCamelCase} ties with ${computerSelectionUpperCase}`;
+}
+
+function updateTextWhenPlayerLoses(playerSelectionCamelCase, computerSelectionUpperCase) {
+    gameHeadingText.textContent = `You LOST!`;
+    gameSubHeadingText.textContent = `${playerSelectionCamelCase} is beated by ${computerSelectionUpperCase}`;
+    computerScore++;
+    computerScoreText.textContent = computerScore;
+}
+
+function updateTextWhenPlayerWins(playerSelectionCamelCase, computerSelectionUpperCase) {
+    gameHeadingText.textContent = `You WON!`;
+    gameSubHeadingText.textContent = `${playerSelectionCamelCase} beats ${computerSelectionUpperCase}`;
+    playerScore++;
+    playerScoreText.textContent = playerScore;
+}
+
+function updateComputerSelectionSymbol() {
+    let computerChoice = getComputerChoice();
+    let computerSelection = CHOICES[computerChoice]["name"];
+    computerChoiceSymbol.textContent = CHOICES[computerChoice]["symbol"];
+    return computerSelection;
+}
+
+function updatePlayerSelectionSymbol(buttonClicked) {
+    let playerSelection = '';
+    for (let i = 0; i < CHOICES.length; i++) {
+        let name = CHOICES[i]["name"];
+        let symbol = CHOICES[i]["symbol"];
+        if (buttonClicked.toUpperCase() === name.toUpperCase()) {
+            playerSelection = name;
+            playerChoiceSymbol.textContent = symbol;
+        }
+    }
+    return playerSelection;
+}
+
+function resetGame() {
+    gameHeadingText.textContent = `Choose your weapon`;
+    gameSubHeadingText.textContent = 'First to score 5 points wins the game';
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreText.textContent = playerScore;
+    computerScoreText.textContent = computerScore;
+    playerChoiceSymbol.textContent = '❔';
+    computerChoiceSymbol.textContent = '❔';
+}
+
+function isGameOver(playerWon, computerWon) {
+    return playerWon || computerWon;
+}
 
 function startGame() {
     rockButton.addEventListener('click', () => handleClick('rock'));
@@ -133,5 +168,5 @@ const computerScoreText = document.querySelector("#computer-score");
 
 let playerScore = 0;
 let computerScore = 0;
-
+let totalNumOfGames = 5;
 startGame();
